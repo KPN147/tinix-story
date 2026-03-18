@@ -3,6 +3,7 @@ from datetime import datetime
 from locales.i18n import t
 from services.project_manager import ProjectManager, list_project_titles
 from services.novel_generator import Chapter
+from services.style_manager import StyleManager
 from core.state import app_state
 import logging
 
@@ -40,9 +41,20 @@ def build_continue_tab():
                     memory_type = gr.Radio(label="Cách nhớ ngữ cảnh", choices=["Toàn văn", "Tóm tắt"], value="Toàn văn")
                 with gr.Column(scale=1):
                     memory_chapters = gr.Number(label="Số chương ghi nhớ", value=3, minimum=1, maximum=20, step=1)
+                with gr.Column(scale=1):
+                    use_reflection_checkbox = gr.Checkbox(label="Bật chế độ Tự kiểm duyệt (Self-Reflection)", value=False, info="AI tự đọc lại và sửa lỗi nháp. Tốn gấp đôi thời gian & Token.")
 
             with gr.Row():
                 continue_target_words = gr.Number(label=t("rewrite.target_words"), value=3000, minimum=100, maximum=50000, step=100)
+                
+                style_choices = StyleManager.get_style_names()
+                continue_style_dropdown = gr.Dropdown(
+                    choices=style_choices,
+                    label="Phong cách viết",
+                    value=style_choices[0] if style_choices else None,
+                    interactive=True
+                )
+                
                 continue_custom_prompt = gr.Textbox(label=t("create.custom_prompt_label"), placeholder=t("create.custom_prompt_placeholder"), scale=2)
 
         with gr.Accordion("🚀 3. Sáng tác tiếp", open=False):
@@ -141,11 +153,15 @@ def build_continue_tab():
                     return ch.content or ""
             return ""
 
-        def on_continue_generate(project_title, ch_num, ch_title, ch_desc, target_words, custom_prompt, mem_type, mem_chaps):
+        def on_continue_generate(project_title, ch_num, ch_title, ch_desc, target_words, custom_prompt, mem_type, mem_chaps, use_reflection, selected_style):
             yield "⏳ Đang chuẩn bị dữ liệu...", "", gr.update(interactive=False), gr.update(), gr.update()
             if not app_state.current_project:
                 yield f"❌ {t('continue_tab.no_project_selected')}", "", gr.update(interactive=True), gr.update(), gr.update()
                 return
+
+            gen = app_state.get_generator()
+            if selected_style:
+                gen.config.generation.writing_style = selected_style
 
             gen = app_state.get_generator()
             project = app_state.current_project
@@ -192,7 +208,8 @@ def build_continue_tab():
                 world_setting=project.world_setting,
                 plot_idea=project.plot_idea, genre=project.genre,
                 sub_genres=project.sub_genres,
-                previous_content=prev_content, context_summary=context_summary, custom_prompt=custom_prompt
+                previous_content=prev_content, context_summary=context_summary, custom_prompt=custom_prompt,
+                use_reflection=use_reflection
             )
 
             if content:
@@ -228,11 +245,15 @@ def build_continue_tab():
             else:
                 yield f"❌ {msg}", "", gr.update(interactive=True), gr.update(), gr.update()
 
-        def on_continue_auto_generate(project_title, target_words, custom_prompt, mem_type, mem_chaps, progress=gr.Progress()):
+        def on_continue_auto_generate(project_title, target_words, custom_prompt, mem_type, mem_chaps, use_reflection, selected_style, progress=gr.Progress()):
             yield "⏳ Đang chuẩn bị dữ liệu...", "", gr.update(interactive=False), gr.update(interactive=False), gr.update(), gr.update()
             if not app_state.current_project:
                 yield f"❌ {t('continue_tab.no_project_selected')}", "", gr.update(interactive=True), gr.update(interactive=True), gr.update(), gr.update()
                 return
+
+            gen = app_state.get_generator()
+            if selected_style:
+                gen.config.generation.writing_style = selected_style
 
             gen = app_state.get_generator()
             project = app_state.current_project
@@ -292,7 +313,8 @@ def build_continue_tab():
                     world_setting=project.world_setting,
                     plot_idea=project.plot_idea, genre=project.genre,
                     sub_genres=project.sub_genres,
-                    previous_content=prev_content, context_summary=context_summary, custom_prompt=custom_prompt
+                    previous_content=prev_content, context_summary=context_summary, custom_prompt=custom_prompt,
+                    use_reflection=use_reflection
                 )
 
                 if content:
@@ -347,12 +369,12 @@ def build_continue_tab():
         continue_generate_btn.click(
             fn=on_continue_generate,
             inputs=[continue_project_selector, continue_chapter_num, continue_chapter_title,
-                    continue_chapter_desc, continue_target_words, continue_custom_prompt, memory_type, memory_chapters],
+                    continue_chapter_desc, continue_target_words, continue_custom_prompt, memory_type, memory_chapters, use_reflection_checkbox, continue_style_dropdown],
             outputs=[continue_status, continue_content_display, continue_generate_btn, continue_outline_display, continue_chapter_selector]
         )
         continue_auto_btn.click(
             fn=on_continue_auto_generate,
-            inputs=[continue_project_selector, continue_target_words, continue_custom_prompt, memory_type, memory_chapters],
+            inputs=[continue_project_selector, continue_target_words, continue_custom_prompt, memory_type, memory_chapters, use_reflection_checkbox, continue_style_dropdown],
             outputs=[continue_status, continue_content_display, continue_auto_btn, continue_generate_btn, continue_outline_display, continue_chapter_selector],
             show_progress="full"
         )

@@ -20,16 +20,16 @@ logger = logging.getLogger(__name__)
 
 # Mẫu cài sẵn - lựa chọn kiểu phong phú (các phím được ánh xạ tới ngôn ngữ)
 def _build_preset_templates():
-    """Build preset templates from locale"""
-    keys = [
-        "default", "xianxia", "romance", "thriller", "scifi", "wuxia",
-        "palace", "military", "historical", "supernatural", "campus",
-        "business", "cyberpunk", "fantasy", "horror", "humor", "literary", "adventure"
-    ]
-    return {t(f"templates.name_{k}"): t(f"templates.{k}") for k in keys}
+    """Build preset templates from StyleManager"""
+    from services.style_manager import StyleManager
+    styles = StyleManager.load_styles()
+    templates = {}
+    for g in styles:
+        templates[g["name"]] = g["description"]
+    return templates
 
 def get_preset_templates():
-    """Get preset templates (rebuilt each call to respect active language)"""
+    """Get preset templates (rebuilt each call to respect Active Genres)"""
     return _build_preset_templates()
 
 
@@ -375,7 +375,8 @@ class NovelGenerator:
         sub_genres: List[str] = None,
         previous_content: str = "",
         context_summary: str = "",
-        custom_prompt: str = ""
+        custom_prompt: str = "",
+        use_reflection: bool = False
     ) -> Tuple[str, str]:
         """
         Tạo một chương đơn lẻ
@@ -460,6 +461,22 @@ class NovelGenerator:
             logger.error(f"Chapter generation failed: {content}")
             return "", content
 
+        if use_reflection:
+            logger.info("Applying self-reflection to the generated chapter draft...")
+            # Sử dụng content nháp làm nguyên liệu cho lượt tạo reflection mới
+            reflection_sys = t("prompts.reflection_system")
+            reflection_prompt = t("prompts.reflection_user", chapter_req=prompt, draft_content=content, target_words=target_words)
+            reflection_messages = [
+                {"role": "system", "content": reflection_sys},
+                {"role": "user", "content": reflection_prompt}
+            ]
+            success, final_content = self.api_client.generate(reflection_messages, use_cache=False)
+            if not success:
+                logger.error(f"Reflection generation failed: {final_content}. Falling back to draft content.")
+            else:
+                logger.info("Reflection generation success.")
+                content = final_content
+
         logger.info(f"Chapter generation success: {chapter_num}")
         logger.info(f"Chapter content length: {len(content)}")
         return content, t("generator.gen_success")
@@ -477,7 +494,8 @@ class NovelGenerator:
         sub_genres: List[str] = None,
         previous_content: str = "",
         context_summary: str = "",
-        custom_prompt: str = ""
+        custom_prompt: str = "",
+        use_reflection: bool = False
     ):
         """
         Tạo một chương đơn lẻ bằng streaming
@@ -536,13 +554,34 @@ class NovelGenerator:
         if context_summary:
             logger.info(f"Using context enhancement, context length: {len(context_summary)}")
             
-        for success, chunk in self.api_client.generate_stream(messages=messages):
-            yield success, chunk
+        if not use_reflection:
+            for success, chunk in self.api_client.generate_stream(messages=messages):
+                yield success, chunk
+        else:
+            logger.info("Generating draft for reflection in streaming mode...")
+            success, draft_content = self.api_client.generate(messages, use_cache=False)
+            
+            if not success:
+                logger.error(f"Draft generation failed: {draft_content}")
+                yield False, draft_content
+                return
+            
+            logger.info("Draft generated. Applying self-reflection stream...")
+            reflection_sys = t("prompts.reflection_system")
+            reflection_prompt = t("prompts.reflection_user", chapter_req=prompt, draft_content=draft_content, target_words=target_words)
+            reflection_messages = [
+                {"role": "system", "content": reflection_sys},
+                {"role": "user", "content": reflection_prompt}
+            ]
+            
+            for success, chunk in self.api_client.generate_stream(messages=reflection_messages):
+                yield success, chunk
             
     def rewrite_paragraph(
         self,
         text: str,
-        style_template: str = ""
+        style_template: str = "",
+        use_reflection: bool = False
     ) -> Tuple[str, str]:
         """
         Viết lại đoạn văn (có cơ chế thử lại)
@@ -617,6 +656,19 @@ class NovelGenerator:
             # Xác minh nội dung đã được thông qua
             logger.info(f"Rewrite done, content length: {len(content)}, attempts: {attempt + 1}")
             logger.debug(f"Content first 200: {content[:200]}")
+            
+            if use_reflection:
+                logger.info("Applying self-reflection to rewritten paragraph draft...")
+                reflection_sys = t("prompts.reflection_system")
+                reflection_prompt = t("prompts.reflection_user", chapter_req=prompt, draft_content=content, target_words=len(content))
+                reflection_messages = [
+                    {"role": "system", "content": reflection_sys},
+                    {"role": "user", "content": reflection_prompt}
+                ]
+                success, final_content = self.api_client.generate(reflection_messages, use_cache=False)
+                if success:
+                    content = final_content
+            
             return content, t("generator.rewrite_success")
 
         # Tất cả các lần thử lại đều thất bại
@@ -653,7 +705,8 @@ class NovelGenerator:
         self,
         text: str,
         polish_type: str = "general",
-        custom_requirements: str = ""
+        custom_requirements: str = "",
+        use_reflection: bool = False
     ) -> Tuple[str, str]:
         """
         Văn bản tiếng Ba Lan (với cơ chế thử lại)
@@ -746,6 +799,19 @@ class NovelGenerator:
             # Xác minh nội dung đã được thông qua
             logger.info(f"Polish done, content length: {len(content)}, attempts: {attempt + 1}")
             logger.debug(f"Content first 200: {content[:200]}")
+            
+            if use_reflection:
+                logger.info("Applying self-reflection to polished paragraph draft...")
+                reflection_sys = t("prompts.reflection_system")
+                reflection_prompt = t("prompts.reflection_user", chapter_req=prompt, draft_content=content, target_words=len(content))
+                reflection_messages = [
+                    {"role": "system", "content": reflection_sys},
+                    {"role": "user", "content": reflection_prompt}
+                ]
+                success, final_content = self.api_client.generate(reflection_messages, use_cache=False)
+                if success:
+                    content = final_content
+            
             return content, t("generator.polish_success")
 
         # Tất cả các lần thử lại đều thất bại
@@ -755,7 +821,8 @@ class NovelGenerator:
     def polish_and_suggest(
         self,
         text: str,
-        custom_requirements: str = ""
+        custom_requirements: str = "",
+        use_reflection: bool = False
     ) -> Tuple[str, str, str]:
         """
         Trau chuốt văn bản và đưa ra đề xuất
@@ -783,6 +850,18 @@ class NovelGenerator:
         if not success:
             logger.error(f"Polish failed: {content}")
             return "", "", content
+
+        if use_reflection:
+            logger.info("Applying self-reflection to polish and suggest paragraph draft...")
+            reflection_sys = t("prompts.reflection_system")
+            reflection_prompt = t("prompts.reflection_user", chapter_req=prompt, draft_content=content, target_words=len(content))
+            reflection_messages = [
+                {"role": "system", "content": reflection_sys},
+                {"role": "user", "content": reflection_prompt}
+            ]
+            success, final_content = self.api_client.generate(reflection_messages, use_cache=False)
+            if success:
+                content = final_content
 
         # Thêm xác minh nội dung
         if len(content) < 10:
@@ -995,9 +1074,17 @@ class NovelGenerator:
 
     def _build_style_description(self) -> str:
         """Mô tả phong cách xây dựng"""
+        from services.style_manager import StyleManager
         gen = self.config.generation
+        style_name = gen.writing_style
+        style_desc = StyleManager.get_style_description(style_name)
+        
+        full_style = style_name
+        if style_desc:
+            full_style += f" ({style_desc})"
+            
         return t("prompts.style_description",
-            writing_style=gen.writing_style,
+            writing_style=full_style,
             writing_tone=gen.writing_tone,
             character_development=gen.character_development,
             plot_complexity=gen.plot_complexity

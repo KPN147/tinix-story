@@ -18,6 +18,8 @@
 - **🔄 Smart Rewrite**: Upload your existing text and rewrite it using 17 high-quality, preset styles (e.g., Eastern Fantasy, Hard Sci-Fi, Urban Romance, Horror, etc.).
 - **📖 Smart Continue**: Upload a partially written novel. The AI will analyze the context, characters, and world-building, and automatically continue the story maintaining your style and tone.
 - **✨ Novel Polish**: Advanced polishing tools with 8 specific modes: General Polish, Find Errors, Improvement Suggestions, Direct Edit, Remove AI Tone, Enhance Details, Optimize Dialogue, and Improve Pacing.
+- **🎭 Diverse Web Novel Styles**: Natively supports 30+ highly-specialized web novel genres and styles like Eastern Fantasy (Xianxia/Wuxia), System Face-slapping, Sci-Fi Mecha, Infinite Flow, Sweet Pet Romance, Slice of Life, eSports, Dark Fantasy, and more. AI will meticulously adapt vocabulary, pacing, and tone to fit the chosen sub-culture.
+- **🧠 Self-Reflection Check**: A built-in critique loop where the AI generates a draft, reviews it against the outline to detect logic flaws or "AI tone", and rewrites a perfect version before saving.
 - **📄 Flexible File Parsing**: Upload your own files (`.txt`, `.pdf`, `.epub`, `.md`, `.docx`). The system supports multiple parsing mechanisms including auto-split, split by word count, and split by custom Regex patterns.
 - **💾 Multi-Format Export**: Export your completed or in-progress projects into Word (`.docx`), Plain Text (`.txt`), Markdown (`.md`), or HTML (`.html`) with a single click.
 - **📂 Project Management**: Manage multiple novel projects simultaneously. Track completion percentage, chapter counts, update dates, and manage generation cache.

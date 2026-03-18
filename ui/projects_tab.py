@@ -13,9 +13,7 @@ def build_projects_tab():
             headers=["ID", t("ui.col_project_name"), t("ui.col_type"), t("ui.col_created_at"), t("ui.col_chapters")],
             interactive=False
         )
-        with gr.Row():
-            refresh_projects_btn = gr.Button(t("projects.refresh_btn"))
-            delete_project_btn = gr.Button(t("projects.delete_btn"), variant="stop")
+        refresh_projects_btn = gr.Button(t("projects.refresh_btn"))
 
         gr.Markdown(f"#### {t('projects.delete_header')}")
         delete_project_selector = gr.Dropdown(
@@ -23,6 +21,7 @@ def build_projects_tab():
             label=t("projects.delete_select_project"),
             interactive=True
         )
+        delete_project_btn = gr.Button(t("projects.delete_btn"), variant="stop")
         project_manage_status = gr.Textbox(label=t("projects.status_label"), interactive=False)
 
         def on_refresh_projects():

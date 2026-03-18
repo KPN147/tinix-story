@@ -9,6 +9,7 @@ from services.novel_generator import OutlineParser
 from services.project_manager import ProjectManager
 from services.genre_manager import GenreManager
 from services.sub_genre_manager import SubGenreManager
+from services.style_manager import StyleManager
 from core.state import app_state
 import logging
 
@@ -34,6 +35,14 @@ def build_create_tab():
                         choices=sub_genre_choices,
                         label=t("create.sub_genres_label"),
                         multiselect=True,
+                        interactive=True
+                    )
+                    
+                    style_choices = StyleManager.get_style_names()
+                    create_style_dropdown = gr.Dropdown(
+                        choices=style_choices,
+                        label="Phong cách viết",
+                        value=style_choices[0] if style_choices else None,
                         interactive=True
                     )
 
@@ -115,6 +124,8 @@ def build_create_tab():
                     memory_type = gr.Radio(label="Cách nhớ ngữ cảnh", choices=["Toàn văn", "Tóm tắt"], value="Toàn văn")
                 with gr.Column(scale=1):
                     memory_chapters = gr.Number(label="Số chương ghi nhớ", value=3, minimum=1, maximum=20, step=1)
+                with gr.Column(scale=1):
+                    use_reflection_checkbox = gr.Checkbox(label="Bật chế độ Tự kiểm duyệt (Self-Reflection)", value=False, info="AI tự đọc lại và sửa lỗi nháp. Tốn gấp đôi thời gian & Token.")
             with gr.Row():
                 auto_generate_btn = gr.Button(t("create.start_gen_btn"), variant="primary", size="lg", interactive=False)
                 stop_btn = gr.Button(t("create.pause_gen_btn"), variant="stop", size="lg", interactive=False)
@@ -200,9 +211,13 @@ def build_create_tab():
             )
             return content, msg
 
-        def on_auto_generate(title, genre, sub_genres, char_setting, world_setting, plot_idea, outline_text, mem_type, mem_chaps, progress=gr.Progress()):
+        def on_auto_generate(title, genre, sub_genres, char_setting, world_setting, plot_idea, outline_text, mem_type, mem_chaps, use_reflection, selected_style, progress=gr.Progress()):
             """Tự động tạo toàn bộ tiểu thuyết"""
             gen = app_state.get_generator()
+            
+            # Cập nhật style vào config hiện tại
+            if selected_style:
+                gen.config.generation.writing_style = selected_style
 
             chapters, parse_msg = OutlineParser.parse(outline_text)
             if not chapters:
@@ -273,7 +288,8 @@ def build_create_tab():
                     chapter_desc=chapter.desc, novel_title=title,
                     character_setting=char_setting, world_setting=world_setting,
                     plot_idea=plot_idea, genre=genre, sub_genres=sub_genres,
-                    previous_content=prev_content, context_summary=context_summary
+                    previous_content=prev_content, context_summary=context_summary,
+                    use_reflection=use_reflection
                 )
 
                 if content:
@@ -340,7 +356,7 @@ def build_create_tab():
         )
         auto_generate_btn.click(
             fn=on_auto_generate,
-            inputs=[title_input, genre_dropdown, sub_genre_dropdown, character_input, world_input, plot_input, outline_output, memory_type, memory_chapters],
+            inputs=[title_input, genre_dropdown, sub_genre_dropdown, character_input, world_input, plot_input, outline_output, memory_type, memory_chapters, use_reflection_checkbox, create_style_dropdown],
             outputs=[generation_progress, chapter_selector]
         )
         chapter_selector.change(

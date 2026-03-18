@@ -1,402 +1,402 @@
 [
     {
         "name": "Hậu cung",
-        "description": ""
+        "description": "Nhân vật chính (thường là nam) có mối quan hệ tình cảm đồng thời và kết hôn cùng nhiều nhân vật khác giới."
     },
     {
         "name": "1v1",
-        "description": ""
+        "description": "Cốt truyện chỉ xoay quanh tình yêu duy nhất trọn đời giữa hai người, thủy chung 1 nam - 1 nữ."
     },
     {
         "name": "NP",
-        "description": ""
+        "description": "Motif Poly (Multiple Partners), một nhân vật chính có mối quan hệ tình cảm lãng mạn chính thức với nhiều người cùng một lúc và kết thúc có hậu cùng nhau hòa bình."
     },
     {
         "name": "Nữ phẫn nam trang",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Nam phẫn nữ trang",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Xuyên không",
-        "description": ""
+        "description": "Nhân vật chính từ thế giới thực xuyên đến một thế giới khác, thời đại khác."
     },
     {
         "name": "Xuyên sách",
-        "description": ""
+        "description": "Nhân vật chính xuyên vào cốt truyện của một bộ tiểu thuyết, thường thay đổi số phận của nguyên chủ."
     },
     {
         "name": "Trọng sinh",
-        "description": ""
+        "description": "Nhân vật chính chết đi và sống lại ở một thời điểm trong quá khứ để làm lại cuộc đời."
     },
     {
         "name": "Hệ thống",
-        "description": ""
+        "description": "Được gắn kết với một hệ thống (trí tuệ nhân tạo) cung cấp nhiệm vụ, kỹ năng và đạo cụ."
     },
     {
         "name": "Bàn tay vàng",
-        "description": ""
+        "description": "Sở hữu năng lực, bảo bối hoặc lợi thế cực kỳ to lớn ngay từ đầu."
     },
     {
         "name": "Không gian tùy thân",
-        "description": ""
+        "description": "Có một dị không gian bí mật để tàng hình, lưu trữ vật phẩm hoặc trồng trọt."
     },
     {
         "name": "Linh tuyền",
-        "description": ""
+        "description": "Sở hữu suối nước thánh có tác dụng cường thân kiện thể, chữa bách bệnh, thúc đẩy sinh trưởng."
     },
     {
         "name": "Đọc tâm thuật",
-        "description": ""
+        "description": "Năng lực ngoại cảm có thể nghe được suy nghĩ thực sự của người khác."
     },
     {
         "name": "Vô địch lưu",
-        "description": ""
+        "description": "Nhân vật chính sở hữu sức mạnh vô địch, áp đảo mọi kẻ thù ngay từ đầu truyện."
     },
     {
         "name": "Cẩu đạo",
-        "description": ""
+        "description": "Nhân vật chính theo trường phái ẩn nhẫn, phát triển âm thầm, tuyệt đối không phô trương để giấu thực lực."
     },
     {
         "name": "Nhiệt huyết",
-        "description": ""
+        "description": "Mạch truyện sục sôi, đề cao tinh thần chiến đấu không lùi bước, dũng cảm đối mặt rủi ro."
     },
     {
         "name": "Hài hước",
-        "description": ""
+        "description": "Văn phong mang đậm tính giải trí, tấu hài, nhiều tình huống dở khóc dở cười."
     },
     {
         "name": "Sảng văn",
-        "description": ""
+        "description": "Truyện tập trung vào sự thăng tiến nhanh chóng, vả mặt kẻ khinh thường mình, mang lại cảm giác thỏa mãn."
     },
     {
         "name": "Ngọt sủng",
-        "description": ""
+        "description": "Tình tiết lãng mạn, ngọt ngào, nhân vật chính được yêu thương chiều chuộng hết mực, ít bi kịch."
     },
     {
         "name": "Ngược luyến",
-        "description": ""
+        "description": "Tình yêu nhiều oán hận, hiểu lầm, dằn vặt tổn thương sâu sắc cả thể xác lẫn tinh thần."
     },
     {
         "name": "Gương vỡ lại lành",
-        "description": ""
+        "description": "Hai người từng yêu nhau, chia tay vì hiểu lầm hoặc hoàn cảnh, sau đó vượt qua thử thách để quay về bên nhau."
     },
     {
         "name": "Cưới trước yêu sau",
-        "description": ""
+        "description": "Kết hôn vì bổn phận, giao dịch hoặc ép buộc, sau quá trình sống chung mới nảy sinh tình cảm thật sự."
     },
     {
         "name": "Oan gia ngõ hẹp",
-        "description": ""
+        "description": "Cặp đôi ban đầu có ấn tượng xấu, ghét bỏ nhau, nhưng qua nhiều đụng độ lại dần yêu nhau."
     },
     {
         "name": "Thanh mai trúc mã",
-        "description": ""
+        "description": "Nhân vật lớn lên cùng nhau từ nhỏ, có nền tảng tình cảm gắn kết sâu đậm và hiểu rõ về nhau."
     },
     {
         "name": "Hào môn thế gia",
-        "description": ""
+        "description": "Bối cảnh giới siêu giàu, gia tộc quyền thế, đi kèm với tranh giành tài sản hoặc hôn nhân thương mại."
     },
     {
         "name": "Tổng tài",
-        "description": ""
+        "description": "Nam chính là giám đốc, chủ tịch bá đạo, quyền thế, lạnh lùng nhưng rất sủng ái nữ chính."
     },
     {
         "name": "Minh tinh",
-        "description": ""
+        "description": "Nhân vật chính là ngôi sao giải trí, cốt truyện khai thác ánh hào quang và góc khuất của showbiz."
     },
     {
         "name": "Giới giải trí",
-        "description": ""
+        "description": "Bối cảnh tập trung vào mâu thuẫn, lịch trình, scandal và hoạt động nghệ thuật của giới giải trí."
     },
     {
         "name": "Vườn trường",
-        "description": ""
+        "description": "Truyện xoay quanh cuộc sống thanh xuân học đường, tình cảm tuổi học trò trong sáng và nhiệt huyết."
     },
     {
         "name": "Học bá",
-        "description": ""
+        "description": "Nhân vật chính có trí tuệ xuất chúng, tính toán thần sầu, giỏi giang về mặt học vấn."
     },
     {
         "name": "Võng du",
-        "description": ""
+        "description": "Nhân vật chơi game online (có thể là thực tế ảo), cốt truyện đan xen giữa game và đời thực."
     },
     {
         "name": "E-sports",
-        "description": ""
+        "description": "Tập trung vào thể thao điện tử chuyên nghiệp, giải đấu và sự cạnh tranh khốc liệt khao khát cúp vô địch."
     },
     {
         "name": "Livestream",
-        "description": ""
+        "description": "Sử dụng hình thức phát sóng trực tiếp (livestream) để tương tác, kiếm tiền hoặc làm nhiệm vụ."
     },
     {
         "name": "Mỹ thực",
-        "description": ""
+        "description": "Tập trung miêu tả các món ăn ngon, quá trình nấu nướng và kinh doanh nhà hàng xuất sắc."
     },
     {
         "name": "Nông trại",
-        "description": ""
+        "description": "Quản lý và phát triển nông trại, thường kết hợp với kinh tế nhàn nhã, chữa lành."
     },
     {
         "name": "Điền văn",
-        "description": ""
+        "description": "Cốt truyện bình dị, mô tả cuộc sống làm ruộng, làm nông trồng trọt chăn nuôi mang hơi thở dân dã, ấm cúng."
     },
     {
         "name": "Nuôi con",
-        "description": ""
+        "description": "Tập trung vào hành trình chăm sóc, nuôi dưỡng con cái (con ruột, con nuôi hoặc manh bảo)."
     },
     {
         "name": "Làm giàu",
-        "description": ""
+        "description": "Quá trình nhân vật chính từ hai bàn tay trắng xây dựng sự nghiệp, kinh doanh trở nên giàu sang phú quý."
     },
     {
         "name": "Cung đấu",
-        "description": ""
+        "description": "Những mưu mô ác hiểm tranh giành sủng ái và quyền lực chốn hậu cung giữa các phi tần."
     },
     {
         "name": "Gia đấu",
-        "description": ""
+        "description": "Xung đột lợi ích, quyền hành và địa vị nội bộ trong các đại gia tộc danh gia vọng tộc."
     },
     {
         "name": "Quyền mưu",
-        "description": ""
+        "description": "Sử dụng trí mưu, âm mưu quyền thuật thâm sâu để tranh đoạt vương quyền, vị thế trên triều đình."
     },
     {
         "name": "Nữ cường",
-        "description": ""
+        "description": "Nữ chính độc lập, mạnh mẽ, thông minh, không quá luỵ nam chính, thường tự giải quyết các rắc rối mưu mô."
     },
     {
         "name": "Nam cường",
-        "description": ""
+        "description": "Nam chính vô cùng mạnh mẽ, quyền thế, tài giỏi, cường giả vi tôn che chở và bảo vệ người mình yêu."
     },
     {
         "name": "Song khiết",
-        "description": ""
+        "description": "Cả nam và nữ chính đều là mối tình đầu tiên về cả thể xác lẫn tâm hồn của nhau, 1v1 tuyệt đối."
     },
     {
         "name": "Phế Sài",
-        "description": ""
+        "description": "Nhân vật chính bị coi là đồ bỏ đi, rác rưởi, không có tài năng bẩm sinh nhưng sau đó quật khởi vả mặt."
     },
     {
         "name": "Thiên tài",
-        "description": ""
+        "description": "Có năng khiếu phi phàm vượt trội, thiên phú cực cao, tốc độ tu luyện hoặc tiếp thu nhanh hơn bất kỳ ai."
     },
     {
         "name": "Từ hôn",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Linh khí khôi phục",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Mạt thế",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Cơ giáp",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Tinh tế",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "ABO",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Người sói",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Ma cà rồng",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Tây huyễn",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Ma pháp",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Kiếm ma",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Pháp sư",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Giả heo ăn hổ",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Bi kịch",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Chữa lành",
-        "description": ""
+        "description": "Văn phong ấm áp ngọt ngào, nhấn mạnh vào quá trình các nhân vật xoa dịu vết thương lòng hoặc áp lực cuộc sống cho nhau."
     },
     {
         "name": "Hắc ám",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Gothic",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Tâm lý",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Tâm thần phân liệt",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Đa nhân cách",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Trinh thám",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Phá án",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Đạo mộ",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Cương thi",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Quy tắc quái đàm",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Vô hạn lưu",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Mau xuyên",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Thực dân",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Chế tạo",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Lĩnh chúa",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Trồng trọt",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Câu cá",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Nuôi thú",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Pokemon",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Anime",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Harry Potter",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Marvel",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Biển sao",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Truyền thuyết đô thị",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Cổ đại",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Dân quốc",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Thập niên 70",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Thập niên 80",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Thập niên 90",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Dị thế",
-        "description": ""
+        "description": "Xuyên đến một thế giới hoàn toàn khác Trái Đất, với những hệ tư tưởng, ma pháp hay nền văn minh dị thường."
     },
     {
         "name": "Đại lục",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Bộ lạc",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Nguyên thủy",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Tu tiên",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Trả thù",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Pháo hôi",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Vai ác",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Tiên tri",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     },
     {
         "name": "Phép thuật",
-        "description": ""
+        "description": "AI sẽ sử dụng quy chuẩn và đặc trưng của thể loại con này để tối ưu hóa tình tiết, bối cảnh và văn phong câu chuyện."
     }
 ]

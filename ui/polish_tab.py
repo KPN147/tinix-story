@@ -25,6 +25,8 @@ def build_polish_tab():
         with gr.Row():
             polish_btn = gr.Button(t("polish.start_polish"), variant="primary")
             polish_suggest_btn = gr.Button(t("polish.polish_suggest_btn"), variant="secondary")
+            
+        use_reflection_checkbox = gr.Checkbox(label="Bật chế độ Tự kiểm duyệt (Self-Reflection)", value=False, info="AI báo lỗi và viết lại cho hoàn chỉnh hơn.")
 
         polish_status = gr.Textbox(label=t("polish.polish_status"), interactive=False)
         polish_output = gr.Textbox(label=t("polish.polished_text"), lines=15, interactive=True)
@@ -38,24 +40,24 @@ def build_polish_tab():
             except Exception as e:
                 return f"❌ {str(e)}"
 
-        def on_polish(text, custom_req):
+        def on_polish(text, custom_req, use_reflection):
             yield "⏳ Đang gọi AI xử lý... Vui lòng chờ.", gr.update(), gr.update(interactive=False)
             gen = app_state.get_generator()
-            content, msg = gen.polish_text(text, custom_requirements=custom_req)
+            content, msg = gen.polish_text(text, custom_requirements=custom_req, use_reflection=use_reflection)
             if content:
                 yield f"✅ {msg}", content, gr.update(interactive=True)
             else:
                 yield f"❌ {msg}", gr.update(), gr.update(interactive=True)
 
-        def on_polish_suggest(text, custom_req):
+        def on_polish_suggest(text, custom_req, use_reflection):
             yield "⏳ Đang gọi AI xử lý... Vui lòng chờ.", gr.update(), gr.update(interactive=False)
             gen = app_state.get_generator()
-            content, msg = gen.polish_and_suggest(text, custom_requirements=custom_req)
+            content, msg = gen.polish_and_suggest(text, custom_requirements=custom_req, use_reflection=use_reflection)
             if content:
                 yield f"✅ {msg}", content, gr.update(interactive=True)
             else:
                 yield f"❌ {msg}", gr.update(), gr.update(interactive=True)
 
         polish_file_input.change(fn=on_polish_file_upload, inputs=[polish_file_input], outputs=[polish_input])
-        polish_btn.click(fn=on_polish, inputs=[polish_input, polish_custom_req], outputs=[polish_status, polish_output, polish_btn])
-        polish_suggest_btn.click(fn=on_polish_suggest, inputs=[polish_input, polish_custom_req], outputs=[polish_status, polish_output, polish_suggest_btn])
+        polish_btn.click(fn=on_polish, inputs=[polish_input, polish_custom_req, use_reflection_checkbox], outputs=[polish_status, polish_output, polish_btn])
+        polish_suggest_btn.click(fn=on_polish_suggest, inputs=[polish_input, polish_custom_req, use_reflection_checkbox], outputs=[polish_status, polish_output, polish_suggest_btn])

@@ -59,29 +59,37 @@ Trước khi bắt đầu sáng tác, bạn **bắt buộc** phải cấu hình 
 
 ---
 
-## ✍️ 3. Các tính năng sáng tác cốt lõi
+## 💎 3. Các tính năng Nổi bật Khác Biệt
 
-### 3.1. Sáng tác từ con số không (Create from Scratch)
+- **🎭 Đa dạng văn phong Truyện Mạng**: Hỗ trợ xuất sắc hơn 30+ thể loại và văn phong chuyên sâu nhất của giới tiểu thuyết mạng hiện nay: Cổ phong nhã vận (Tiên Hiệp), Sảng khoái cực độ (Hệ thống vả mặt), Hắc ám u ám, Ngọt sủng rắc đường, Hồi hộp giật gân, Điền văn sinh hoạt, Thế giới tinh tế (Cơ giáp/Sci-fi), Quan trường quyền mưu, Thanh xuân vườn trường, Ngược luyến tàn tâm, Vô hạn lưu, Quần tượng liệt truyện, eSports, Đồng nhân, v.v. AI sẽ tự động thay đổi từ vựng, nhịp độ và giọng điệu chuẩn xác với văn hóa của từng dòng truyện.
+- **🧠 Chế độ Tự Kiểm Duyệt (Self-Reflection)**: Không như các công cụ tạo văn bản thông thường, TiniX Story tích hợp quy trình "Biên tập viên AI" ẩn. Ở chế độ này, AI viết nháp một bản, tự đối chiếu với dàn ý để bắt lỗi logic, sự lan man, sai tính cách nhân vật hoặc "văn phong robot", sau đó tự động đập đi viết lại một phiên bản hoàn hảo 100% tiếng Việt thuần túy trước khi lưu.
+- **🛡️ Mạch truyện nhất quán**: Hệ thống tích hợp khả năng nhét ngữ cảnh (context window) siêu việt qua cơ chế tóm tắt linh hoạt (theo Toàn văn hoặc Tóm tắt các chương), kết hợp với bảng check-list mạch lạc nghiêm ngặt để đảm bảo AI phát triển tiếp tuyến truyện chính mà không bị "quên" nhân vật cũ hay lặp đi lặp lại một tình tiết.
+
+---
+
+## ✍️ 4. Các tính năng sáng tác thường quy
+
+### 4.1. Sáng tác từ con số không (Create from Scratch)
 Chức năng này dành cho việc xây dựng một bộ tiểu thuyết hoàn toàn mới.
 - Điền các thông tin cơ bản: Tên tiểu thuyết, Thể loại, Chủ đề phụ.
 - Nhấp **✨ Nhận cảm hứng trí tuệ nhân tạo** để gợi ý Tên sách, Tuyến nhân vật, Thế giới quan.
 - Sau khi có đủ Thiết lập, nhấp **Tạo dàn ý**. Phải đảm bảo dàn ý tuân thủ cấu trúc mỗi dòng một chương để hệ thống nhận diện đúng.
 - Bấm **Bắt đầu tạo / Tiếp tục** để AI bắt đầu viết từng chương. Hệ thống tự động ghi nhớ bối cảnh (context) từ các chương trước.
 
-### 3.2. Chế độ Viết lại (Rewrite Mode)
+### 4.2. Chế độ Viết lại (Rewrite Mode)
 Chức năng dùng để thay đổi văn phong của một đoạn văn bản có sẵn.
 - Tải tệp lên (TXT, DOCX, v.v.) hoặc dán trực tiếp.
 - Lựa chọn cách phân đoạn để AI không bị quá tải: Tự động, theo số lượng chữ, hoặc theo biểu thức/cụm từ tùy chỉnh (VD: Phân tách theo "Chương").
-- Chọn một trong **17 phong cách văn học** (Tiên hiệp, Lãng mạn đô thị, Kinh dị, Khoa học viễn tưởng, Hardcore...).
+- Chọn một trong **hơn 30 phong cách văn học** (Tiên hiệp, Cổ phong, Lãng mạn đô thị, Kinh dị, Sảng văn, Vô hạn lưu, v.v...).
 - Bấm **Bắt đầu viết lại**. Hệ thống sẽ chạy và bạn có thể theo dõi trực tiếp.
 
-### 3.3. Chế độ Viết tiếp (Continue Mode)
+### 4.3. Chế độ Viết tiếp (Continue Mode)
 Dành cho trường hợp bạn viết dở hoặc có một tác phẩm đang dang dở.
 - Điền các thiết lập nhân vật, thế giới quan (nếu có, để AI nắm bắt tốt hơn).
 - Cung cấp nội dung văn bản phần trước.
 - AI sẽ phân tích văn phong, giọng văn và tự động viết tiếp cốt truyện một cách logic.
 
-### 3.4. Trau chuốt tiểu thuyết (Novel Polish)
+### 4.4. Trau chuốt tiểu thuyết (Novel Polish)
 Giống như một biên tập viên chuyên nghiệp rà soát lại tác phẩm của bạn.
 - Cung cấp văn bản thô.
 - Chọn loại hình trau chuốt: 
@@ -93,14 +101,14 @@ Giống như một biên tập viên chuyên nghiệp rà soát lại tác phẩ
 
 ---
 
-## 📂 4. Quản lý Dự án & Xuất file
+## 📂 5. Quản lý Dự án & Xuất file
 
 - **Thẻ Quản lý Dự án:** Mọi dự án bạn tạo (Sáng tác, Viết lại, Viết tiếp) đều được tự động lưu trữ tại đây. Bạn có thể xem **Tiến độ hoàn thành**, số lượng chương. Nếu bạn muốn tạm ngưng, cứ tắt app; sau đó vào đây chọn dự án và bấm **Viết tiếp (Continue)** để khôi phục tiến trình.
 - **Thẻ Xuất (Export):** Cho phép bạn xuất dự án hoàn chỉnh ra nhiều định dạng chuyên nghiệp như `.docx` (Word), `.txt`, `.md` hoặc `.html`. Rất tiện lợi để gửi cho tòa soạn hoặc đăng tải lên các nền tảng đọc truyện online.
 
 ---
 
-## 🛠 5. Khắc phục sự cố (Troubleshooting)
+## 🛠 6. Khắc phục sự cố (Troubleshooting)
 
 | Vấn đề | Nguyên nhân & Cách giải quyết |
 |--------|------------------------------|
