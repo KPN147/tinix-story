@@ -1,10 +1,12 @@
 import gradio as gr
 from datetime import datetime
+import os
 from locales.i18n import t
 from services.project_manager import ProjectManager, list_project_titles
 from services.novel_generator import Chapter
 from services.style_manager import StyleManager
 from core.state import app_state
+from utils.chapter_saver import save_chapter_md, combine_chapters_md
 import logging
 
 logger = logging.getLogger(__name__)
@@ -76,6 +78,10 @@ def build_continue_tab():
                 with gr.Column(scale=2):
                     continue_chapter_selector = gr.Dropdown(label="Danh sách chương đã tạo", choices=[], interactive=True, allow_custom_value=True)
                     continue_content_display = gr.Textbox(label="Nội dung chương", lines=15, interactive=False)
+            
+            with gr.Row():
+                continue_combine_md_btn = gr.Button("📄 Tổng hợp tất cả thành 1 file .md", variant="secondary", size="lg")
+            continue_combine_md_status = gr.Textbox(label="Trạng thái tổng hợp", interactive=False, visible=False)
 
         def on_refresh_continue(current_title):
             titles = list_project_titles()
@@ -242,6 +248,15 @@ def build_continue_tab():
                 selected_choice = f"Chương {int(ch_num)}: {ch_title}"
                 
                 yield f"✅ Chương {int(ch_num)} đã sinh ({len(content)} từ)", content, gr.update(interactive=True), gr.update(value=outline_text), gr.update(choices=chapter_choices, value=selected_choice)
+
+                # Lưu chương thành file .md riêng
+                md_ok, md_path = save_chapter_md(
+                    project_title=project.title, chapter_num=int(ch_num),
+                    chapter_title=ch_title, content=content,
+                    genre=project.genre, word_count=len(content)
+                )
+                if md_ok:
+                    yield f"✅ Chương {int(ch_num)} đã sinh ({len(content)} từ) — 💾 {os.path.basename(md_path)}", content, gr.update(interactive=True), gr.update(value=outline_text), gr.update(choices=chapter_choices, value=selected_choice)
             else:
                 yield f"❌ {msg}", "", gr.update(interactive=True), gr.update(), gr.update()
 
@@ -306,24 +321,61 @@ def build_continue_tab():
                     if all_past_chapters:
                         prev_content = all_past_chapters[-1].content[-1500:]
 
-                content, msg = gen.generate_chapter(
+                # Sử dụng streaming để có thể dừng giữa chừng
+                accumulated_content = ""
+                generation_stopped = False
+                generation_error = None
+
+                for success, chunk in gen.generate_chapter_stream(
                     chapter_num=int(ch.num), chapter_title=ch.title,
                     chapter_desc=ch.desc, novel_title=project.title,
                     character_setting=project.character_setting,
                     world_setting=project.world_setting,
                     plot_idea=project.plot_idea, genre=project.genre,
                     sub_genres=project.sub_genres,
-                    previous_content=prev_content, context_summary=context_summary, custom_prompt=custom_prompt,
+                    previous_content=prev_content, context_summary=context_summary,
+                    custom_prompt=custom_prompt,
                     use_reflection=use_reflection
-                )
+                ):
+                    if app_state.stop_requested:
+                        generation_stopped = True
+                        break
+                    if success:
+                        accumulated_content += chunk
+                    else:
+                        generation_error = chunk
+                        break
 
-                if content:
+                content = accumulated_content.strip() if accumulated_content else ""
+
+                if generation_stopped:
+                    # Lưu phần đã sinh được (nếu có đủ nội dung)
+                    if content and len(content) > 100:
+                        ch.content = content
+                        ch.word_count = len(content)
+                        ch.generated_at = datetime.now().isoformat()
+                        ProjectManager.save_project(project)
+                        last_content = content
+                        results.append(f"⚠️ Chương {ch.num}: Đã dừng giữa chừng (lưu {len(content)} từ)")
+                    else:
+                        results.append(f"⚠️ Chương {ch.num}: Đã dừng (nội dung quá ngắn, không lưu)")
+                    results.append("\n⚠️ Đã dừng sinh tự động!")
+                    yield "\n".join(results), last_content, gr.update(interactive=True), gr.update(interactive=True), gr.update(), gr.update()
+                    break
+                elif content:
                     ch.content = content
                     ch.word_count = len(content)
                     ch.generated_at = datetime.now().isoformat()
                     ProjectManager.save_project(project)
                     last_content = content
                     
+                    # Lưu chương thành file .md riêng
+                    md_ok, md_path = save_chapter_md(
+                        project_title=project.title, chapter_num=ch.num,
+                        chapter_title=ch.title, content=content,
+                        genre=project.genre, word_count=len(content)
+                    )
+
                     # Format the outline list
                     outline_lines = []
                     for pr_ch in project.chapters:
@@ -332,24 +384,52 @@ def build_continue_tab():
                     outline_text = "\n".join(outline_lines)
                     
                     # Update choices
-                    chapter_choices = [f"Chương {ch.num}: {ch.title}" for ch in project.chapters if getattr(ch, 'content', None)]
+                    chapter_choices = [f"Chương {prch.num}: {prch.title}" for prch in project.chapters if getattr(prch, 'content', None)]
                     selected_choice = f"Chương {ch.num}: {ch.title}"
                     
-                    results.append(f"✅ Chương {ch.num} hoàn tất ({len(content)} từ)")
+                    if md_ok:
+                        results.append(f"✅ Chương {ch.num} hoàn tất ({len(content)} từ) — 💾 {os.path.basename(md_path)}")
+                    else:
+                        results.append(f"✅ Chương {ch.num} hoàn tất ({len(content)} từ) (⚠️ Lưu .md thất bại)")
                     yield "\n".join(results), content, gr.update(interactive=False), gr.update(interactive=False), gr.update(value=outline_text), gr.update(choices=chapter_choices, value=selected_choice)
                 else:
-                    results.append(f"❌ Lỗi ở chương {ch.num}: {msg}")
+                    error_msg = generation_error or "Không có nội dung"
+                    results.append(f"❌ Lỗi ở chương {ch.num}: {error_msg}")
                     app_state.stop_requested = True
                     yield "\n".join(results), last_content, gr.update(interactive=True), gr.update(interactive=True), gr.update(), gr.update()
                     break
 
             app_state.is_generating = False
-            results.append("\n🎉 Hoàn thành chuỗi viết tự động!")
+            completed_count = sum(1 for c in project.chapters if getattr(c, 'content', None))
+            total_words = sum(c.word_count for c in project.chapters if getattr(c, 'content', None) and c.word_count)
+            results.append(f"\n🎉 Hoàn thành chuỗi viết tự động! ({completed_count} chương, {total_words} từ)")
+            results.append(f"💡 Nhấn '📄 Tổng hợp tất cả thành 1 file .md' để gộp thành 1 file duy nhất.")
             yield "\n".join(results), last_content, gr.update(interactive=True), gr.update(interactive=True), gr.update(), gr.update()
 
         def on_continue_stop():
             app_state.stop_requested = True
             return "⏸️ Đang dừng..."
+
+        def on_continue_combine_md():
+            """Tổng hợp tất cả chương thành 1 file .md"""
+            if not app_state.current_project:
+                return gr.update(value="❌ Chưa có dự án nào được tải.", visible=True)
+            project = app_state.current_project
+            completed = [ch for ch in project.chapters if getattr(ch, 'content', None)]
+            if not completed:
+                return gr.update(value="❌ Chưa có chương nào hoàn thành.", visible=True)
+            
+            ok, result = combine_chapters_md(
+                project_title=project.title,
+                chapters=project.chapters,
+                genre=project.genre,
+                character_setting=project.character_setting,
+                world_setting=project.world_setting
+            )
+            if ok:
+                return gr.update(value=f"✅ Đã tổng hợp {len(completed)} chương thành file:\n📄 {result}", visible=True)
+            else:
+                return gr.update(value=f"❌ Lỗi: {result}", visible=True)
 
         refresh_continue_btn.click(
             fn=on_refresh_continue, 
@@ -372,7 +452,7 @@ def build_continue_tab():
                     continue_chapter_desc, continue_target_words, continue_custom_prompt, memory_type, memory_chapters, use_reflection_checkbox, continue_style_dropdown],
             outputs=[continue_status, continue_content_display, continue_generate_btn, continue_outline_display, continue_chapter_selector]
         )
-        continue_auto_btn.click(
+        continue_auto_event = continue_auto_btn.click(
             fn=on_continue_auto_generate,
             inputs=[continue_project_selector, continue_target_words, continue_custom_prompt, memory_type, memory_chapters, use_reflection_checkbox, continue_style_dropdown],
             outputs=[continue_status, continue_content_display, continue_auto_btn, continue_generate_btn, continue_outline_display, continue_chapter_selector],
@@ -380,5 +460,10 @@ def build_continue_tab():
         )
         continue_stop_btn.click(
             fn=on_continue_stop,
-            outputs=[continue_status]
+            outputs=[continue_status],
+            cancels=[continue_auto_event]
+        )
+        continue_combine_md_btn.click(
+            fn=on_continue_combine_md,
+            outputs=[continue_combine_md_status]
         )

@@ -2,11 +2,13 @@ import gradio as gr
 from datetime import datetime
 import json
 import re
+import os
 import traceback
 
 from locales.i18n import t
 from services.novel_generator import OutlineParser
 from services.project_manager import ProjectManager
+from utils.chapter_saver import save_chapter_md, combine_chapters_md, _sanitize_filename
 from services.genre_manager import GenreManager
 from services.sub_genre_manager import SubGenreManager
 from services.style_manager import StyleManager
@@ -136,6 +138,10 @@ def build_create_tab():
                 with gr.Column(scale=2):
                     chapter_selector = gr.Dropdown(label="Danh sách chương đã tạo", choices=[], interactive=True, allow_custom_value=True)
                     chapter_content_display = gr.Textbox(label="Nội dung chương", lines=15, interactive=False)
+            
+            with gr.Row():
+                combine_md_btn = gr.Button("📄 Tổng hợp tất cả thành 1 file .md", variant="secondary", size="lg", interactive=False)
+            combine_md_status = gr.Textbox(label="Trạng thái tổng hợp", interactive=False, visible=False)
 
         def on_suggest_title(genre, sub_genres, custom_prompt):
             yield gr.Radio(visible=False), gr.update(value="⏳ Đang gọi AI xử lý... Vui lòng chờ.", visible=True), gr.update(interactive=False)
@@ -283,31 +289,76 @@ def build_create_tab():
                     if i > 0 and chapters[i-1].content:
                         prev_content = chapters[i-1].content[-1500:]
 
-                content, msg = gen.generate_chapter(
+                # Sử dụng streaming để có thể dừng giữa chừng
+                accumulated_content = ""
+                generation_stopped = False
+                generation_error = None
+
+                for success, chunk in gen.generate_chapter_stream(
                     chapter_num=chapter.num, chapter_title=chapter.title,
                     chapter_desc=chapter.desc, novel_title=title,
                     character_setting=char_setting, world_setting=world_setting,
                     plot_idea=plot_idea, genre=genre, sub_genres=sub_genres,
                     previous_content=prev_content, context_summary=context_summary,
                     use_reflection=use_reflection
-                )
+                ):
+                    if app_state.stop_requested:
+                        generation_stopped = True
+                        break
+                    if success:
+                        accumulated_content += chunk
+                    else:
+                        generation_error = chunk
+                        break
 
-                if content:
+                content = accumulated_content.strip() if accumulated_content else ""
+
+                if generation_stopped:
+                    # Lưu phần đã sinh được (nếu có đủ nội dung)
+                    if content and len(content) > 100:
+                        chapter.content = content
+                        chapter.word_count = len(content)
+                        chapter.generated_at = datetime.now().isoformat()
+                        ProjectManager.save_project(project)
+                        results.append(f"⚠️ Chương {chapter.num}: Đã dừng giữa chừng (lưu {len(content)} từ)")
+                        chapter_name = f"Chương {chapter.num}: {chapter.title}"
+                        generated_chapters.append(chapter_name)
+                    else:
+                        results.append(f"⚠️ Chương {chapter.num}: Đã dừng (nội dung quá ngắn, không lưu)")
+                    results.append("\n⚠️ Đã dừng sinh!")
+                    yield "\n".join(results), gr.update(choices=generated_chapters)
+                    break
+                elif content:
                     chapter.content = content
                     chapter.word_count = len(content)
                     chapter.generated_at = datetime.now().isoformat()
-                    results.append(f"✅ Chương {chapter.num}: {len(content)} từ")
                     ProjectManager.save_project(project)
+
+                    # Lưu chương thành file .md riêng
+                    md_ok, md_path = save_chapter_md(
+                        project_title=title, chapter_num=chapter.num,
+                        chapter_title=chapter.title, content=content,
+                        genre=genre, word_count=len(content)
+                    )
+                    if md_ok:
+                        results.append(f"✅ Chương {chapter.num}: {len(content)} từ — 💾 Đã lưu: {os.path.basename(md_path)}")
+                    else:
+                        results.append(f"✅ Chương {chapter.num}: {len(content)} từ (⚠️ Lưu .md thất bại: {md_path})")
+
                     chapter_name = f"Chương {chapter.num}: {chapter.title}"
                     generated_chapters.append(chapter_name)
                     yield "\n".join(results), gr.update(choices=generated_chapters, value=chapter_name)
                 else:
-                    results.append(f"❌ Chương {chapter.num}: {msg}")
+                    error_msg = generation_error or "Không có nội dung"
+                    results.append(f"❌ Chương {chapter.num}: {error_msg}")
                     yield "\n".join(results), gr.update(choices=generated_chapters)
 
             app_state.is_generating = False
             total_words = sum(ch.word_count for ch in chapters if ch.content)
-            results.append(f"\n🎉 Hoàn thành! Tổng: {total_words} từ")
+            completed_count = sum(1 for ch in chapters if ch.content)
+            results.append(f"\n🎉 Hoàn thành! Tổng: {total_words} từ ({completed_count} chương)")
+            results.append(f"📂 Các file .md đã lưu tại: output/{_sanitize_filename(title)}/")
+            results.append(f"💡 Nhấn nút '📄 Tổng hợp tất cả thành 1 file .md' để gộp thành 1 file duy nhất.")
             yield "\n".join(results), gr.update(choices=generated_chapters)
 
         def on_chapter_select(chapter_title):
@@ -321,6 +372,27 @@ def build_create_tab():
         def on_stop():
             app_state.stop_requested = True
             return "⏸️ Đang dừng..."
+
+        def on_combine_md():
+            """Tổng hợp tất cả chương thành 1 file .md"""
+            if not app_state.current_project:
+                return gr.update(value="❌ Chưa có dự án nào được tải.", visible=True)
+            project = app_state.current_project
+            completed = [ch for ch in project.chapters if getattr(ch, 'content', None)]
+            if not completed:
+                return gr.update(value="❌ Chưa có chương nào hoàn thành.", visible=True)
+            
+            ok, result = combine_chapters_md(
+                project_title=project.title,
+                chapters=project.chapters,
+                genre=project.genre,
+                character_setting=project.character_setting,
+                world_setting=project.world_setting
+            )
+            if ok:
+                return gr.update(value=f"✅ Đã tổng hợp {len(completed)} chương thành file:\n📄 {result}", visible=True)
+            else:
+                return gr.update(value=f"❌ Lỗi: {result}", visible=True)
 
         # Bind events
         suggest_title_btn.click(
@@ -354,7 +426,7 @@ def build_create_tab():
             outputs=[outline_output, outline_status],
             show_progress="full"
         )
-        auto_generate_btn.click(
+        gen_event = auto_generate_btn.click(
             fn=on_auto_generate,
             inputs=[title_input, genre_dropdown, sub_genre_dropdown, character_input, world_input, plot_input, outline_output, memory_type, memory_chapters, use_reflection_checkbox, create_style_dropdown],
             outputs=[generation_progress, chapter_selector]
@@ -364,7 +436,8 @@ def build_create_tab():
             inputs=[chapter_selector],
             outputs=[chapter_content_display]
         )
-        stop_btn.click(fn=on_stop, outputs=[generation_progress])
+        stop_btn.click(fn=on_stop, outputs=[generation_progress], cancels=[gen_event])
+        combine_md_btn.click(fn=on_combine_md, outputs=[combine_md_status])
         
         # Flow Enforcement Events
         title_input.change(
@@ -409,8 +482,9 @@ def build_create_tab():
         outline_output.change(
             fn=lambda o: [
                 gr.update(interactive=bool(o)),
+                gr.update(interactive=bool(o)),
                 gr.update(interactive=bool(o))
             ],
             inputs=[outline_output],
-            outputs=[auto_generate_btn, stop_btn]
+            outputs=[auto_generate_btn, stop_btn, combine_md_btn]
         )

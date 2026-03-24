@@ -69,6 +69,7 @@ coverage.xml
 # ============================================
 cache/
 exports/
+output/
 logs/
 projects/
 config/backups/
